@@ -47,6 +47,13 @@
             @endif
         </div>
 
+         <div>
+            <x-input-label for="no_telp" :value="__('No Telp')" />
+            <x-text-input id="no_telp" name="no_telp" type="text" class="mt-1 block w-full" :value="old('no_telp', $user->no_telp)" required autofocus autocomplete="no_telp" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_telp')" />
+        </div>
+
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
