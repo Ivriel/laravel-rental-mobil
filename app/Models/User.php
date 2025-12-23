@@ -9,6 +9,14 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
+//     User ke Rental (One-to-Many)
+// Logika: 1 Orang (User) bisa melakukan banyak kali (Many) penyewaan mobil di waktu yang berbeda. Tapi 1 data transaksi (Rental) hanya boleh dimiliki oleh 1 orang.
+
+// Sintaks Laravel: * Di Model User: hasMany (mempunyai banyak).
+
+// Di Model Rental: belongsTo (milik dari).
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -21,6 +29,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',     // Untuk membedakan Admin, Petugas, Pelanggan
+        'no_telp',  // Sesuai requirement soal
     ];
 
     /**
@@ -44,5 +54,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
     }
 }

@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            // Gunakan enum agar role terkunci hanya pada 3 pilihan sesuai soal
+            $table->enum('role', ['admin', 'petugas', 'pelanggan'])->default('pelanggan');
+            $table->string('no_telp')->nullable(); // Menghindari error jika pelanggan belum input telp
             $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
