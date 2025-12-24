@@ -21,7 +21,11 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="px-6 py-4 text-gray-900 dark:text-gray-100 flex items-center justify-between">
                   
-                        <p>{{ $brand->name }}</p>
+                        <p>
+                            <a href="{{ route('brands.cars',$brand->id) }}">
+                                {{ $brand->name }}
+                            </a>
+                        </p>
                         @if (auth()->check() && in_array(auth()->user()->role, ['admin','petugas']))
                             
                    

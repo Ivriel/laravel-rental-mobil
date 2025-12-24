@@ -47,6 +47,14 @@ class BrandController extends Controller
 
     }
 
+    public function showCars(Brand $brand) {
+        $cars = $brand->cars()->get();
+        return view('brands.cars',[
+            'brand' => $brand,
+            'cars' => $cars
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

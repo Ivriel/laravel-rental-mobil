@@ -1,23 +1,20 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <x-slot name="header">
+        <div class="flex items-center justify-between px-1">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Cars') }}
+                Brand Mobil: {{ $brand->name }}
             </h2>
-
-            @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'petugas']))
-                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    <a href="{{ route('cars.create') }}">Tambah Mobil</a>
-                </button>
-            @endif
+            <a href="{{ route('brands.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                Kembali ke Brands
+            </a>
         </div>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($cars as $car)
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
+            @if ($cars->count() > 0)
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($cars as $car)
+                         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                         <div class="h-48 w-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
                             @if($car->gambar)
                                 <img src="{{ asset('storage/' . $car->gambar) }}" alt="{{ $car->nama }}"
@@ -30,7 +27,7 @@
                         <div class="p-6 flex-1">
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                                    <a href="{{ route('cars.show',$car->id) }}">
+                                    <a href="{{ route('cars.show',$car->id )}}">
                                         {{ $car->nama }}
                                     </a>
                                 </h3>
@@ -87,15 +84,15 @@
 
                         @endif
                     </div>
-                @endforeach
-            </div>
-
-            @if($cars->isEmpty())
-                <div class="bg-white dark:bg-gray-800 p-6 text-center rounded-lg shadow">
-                    <p class="text-gray-500">Belum ada data mobil.</p>
+                    @endforeach
+                </div>
+                @else
+                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100 text-center">
+                        <p>Tidak ada mobil untuk brand {{ $brand->name }}</p>
+                    </div>
                 </div>
             @endif
         </div>
     </div>
-
 </x-app-layout>

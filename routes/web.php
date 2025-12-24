@@ -18,6 +18,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('brands',BrandController::class)->except('show');
     Route::resource('cars',CarController::class);
     Route::resource('rentals',RentalController::class);
+    Route::get('/brands/{brand}/cars',[BrandController::class, 'showCars'])->name('brands.cars');
 });
 
 Route::middleware('auth')->group(function () {
