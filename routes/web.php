@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::middleware(['auth','verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('brands',BrandController::class)->except('show');
+    Route::resource('cars',CarController::class);
 });
 
 Route::middleware('auth')->group(function () {
