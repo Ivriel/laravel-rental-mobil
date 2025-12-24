@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Detail Mobil {{ $car->id }}
+                Detail Mobil #{{ $car->id }}
             </h2>
 
                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="window.history.back()">
@@ -12,9 +12,16 @@
     <div class="py-12 text-gray-100">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-slate-700 overflow-hidden shadow-xl sm:rounded-lg p-8">
-                <h2 class="text-2xl font-semibold mb-8 border-b border-b-gray-100 pb-4">
+               <div class="flex items-center justify-between border-b border-b-gray-100 mb-8 pb-4">
+                 <h2 class="text-2xl font-semibold">
                     {{ $car->nama }}
                 </h2>
+
+                <span class="rounded-lg bg-red-500 px-4 py-2">
+                    {{ $car->brand->name }}
+                </span>
+
+               </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm text-gray-400">Nama Mobil</label>
