@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::resource('brands',BrandController::class)->except('show');
     Route::resource('cars',CarController::class);
+    Route::resource('rentals',RentalController::class);
 });
 
 Route::middleware('auth')->group(function () {
