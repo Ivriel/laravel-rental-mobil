@@ -5,9 +5,11 @@
             {{ __('Cars') }}
         </h2>
 
+           @if (auth()->check() && in_array(auth()->user()->role, ['admin','petugas']))
           <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             <a href="{{ route('cars.create') }}">Tambah Mobil</a>
         </button>
+        @endif
        </div>
     </x-slot>
 
@@ -39,6 +41,7 @@
                             </p>
                         </div>
 
+                           @if (auth()->check() && in_array(auth()->user()->role, ['admin','petugas']))
                         <div class="p-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-600 flex justify-between gap-2">
                             <a href="{{ route('cars.edit', $car->id) }}" class="flex-1 text-center bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded text-sm font-medium transition">
                                 Edit
@@ -52,6 +55,7 @@
                                 </button>
                             </form>
                         </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
