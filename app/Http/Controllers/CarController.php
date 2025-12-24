@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
@@ -99,8 +100,8 @@ class CarController extends Controller
         // 2. Handle upload gambar baru (jika ada)
         if ($request->hasFile('gambar')) {
             // Delete old image if exists
-            if ($car->gambar && \Storage::disk('public')->exists($car->gambar)) {
-                \Storage::disk('public')->delete($car->gambar);
+            if ($car->gambar && Storage::disk('public')->exists($car->gambar)) {
+                Storage::disk('public')->delete($car->gambar);
             }
             
             // Store new image
