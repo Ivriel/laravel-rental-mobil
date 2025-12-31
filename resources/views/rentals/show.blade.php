@@ -189,7 +189,7 @@
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-slate-700 flex items-center justify-between">
-                    <a href="{{ route('rentals.index') }}"
+                                        <a href="{{ route('rentals.index') }}"
                         class="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -199,6 +199,62 @@
                         Kembali ke Daftar Mobil
                     </a>
 
+                    {{-- Tombol Update Status untuk Petugas/Admin --}}
+                    @if(auth()->user()->role === 'petugas' || auth()->user()->role === 'admin')
+                        <div class="flex gap-2">
+                            @if($rental->status_transaksi == 'booking')
+                                <form action="{{ route('rentals.updateStatus', $rental->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="diambil">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded transition flex items-center gap-2"
+                                            onclick="return confirm('Konfirmasi bahwa mobil sudah diambil pelanggan?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Konfirm Diambil
+                                    </button>
+                                </form>
+                            @elseif($rental->status_transaksi == 'diambil')
+                                <form action="{{ route('rentals.updateStatus', $rental->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="kembali">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded transition flex items-center gap-2"
+                                            onclick="return confirm('Konfirmasi bahwa mobil sudah dikembalikan?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                        </svg>
+                                        Terima Kembali
+                                    </button>
+                                </form>
+                            @elseif($rental->status_transaksi == 'kembali')
+                                <form action="{{ route('rentals.updateStatus', $rental->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="selesai">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition flex items-center gap-2"
+                                            onclick="return confirm('Selesaikan transaksi rental ini?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Selesaikan
+                                    </button>
+                                </form>
+                            @elseif($rental->status_transaksi == 'selesai')
+                                <span class="px-4 py-2 bg-green-100 text-green-800 rounded flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Rental Selesai
+                                </span>
+                            @endif
+                        </div>
+                    @endif
+                    
                     <button onclick="window.print()"
                         class="bg-white text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:bg-gray-200 transition-all shadow-lg active:scale-95">
                         CETAK BUKTI SEWA

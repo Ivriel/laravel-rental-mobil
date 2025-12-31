@@ -90,7 +90,7 @@ class RentalController extends Controller
         $rental->load(['car.brand','user']);
 
         if(auth()->user()->role === 'pelanggan' && $rental->user_id !== auth()->id()) {
-            abort(403, 'Anda tidak diizinkan melihat detail rental orang lain.');
+            abort(403);
         }
 
         return view('rentals.show', compact('rental'));
@@ -119,4 +119,51 @@ class RentalController extends Controller
     {
         //
     }
+
+   public function updateStatus(Request $request, Rental $rental)
+{
+    // Validasi role - hanya petugas dan admin yang bisa update status
+    if (!in_array(auth()->user()->role, ['petugas', 'admin'])) {
+        abort(403, 'Anda tidak memiliki akses untuk mengubah status rental.');
+    }
+    // Validasi input
+    $request->validate([
+        'status' => 'required|in:booking,diambil,kembali,selesai'
+    ]);
+    $newStatus = $request->status;
+    $currentStatus = $rental->status_transaksi;
+    // Validasi transisi status yang valid
+    $validTransitions = [
+        'booking' => ['diambil'],
+        'diambil' => ['kembali'],
+        'kembali' => ['selesai'],
+        'selesai' => [] // Status final, tidak bisa diubah lagi
+    ];
+    if (!in_array($newStatus, $validTransitions[$currentStatus])) {
+        return redirect()->back()->with('error', 'Transisi status tidak valid dari ' . $currentStatus . ' ke ' . $newStatus);
+    }
+    // Validasi tanggal untuk status tertentu
+    if ($newStatus === 'kembali') {
+        $today = now()->toDateString();
+        if ($rental->tanggal_dikembalikan > $today) {
+            return redirect()->back()->with('error', 'Mobil belum bisa dikembalikan. Tanggal kembali: ' . $rental->tanggal_dikembalikan);
+        }
+    }
+    // Update status rental
+    $rental->update(['status_transaksi' => $newStatus]);
+    // Update status mobil berdasarkan status rental
+    $car = $rental->car;
+    if ($newStatus === 'diambil') {
+        $car->update(['status' => 'disewa']);
+    } elseif ($newStatus === 'selesai') {
+        $car->update(['status' => 'tersedia']);
+    }
+    // Pesan sukses
+    $messages = [
+        'diambil' => 'Rental dikonfirmasi sebagai diambil. Mobil sekarang sedang disewa.',
+        'kembali' => 'Mobil berhasil dikembalikan. Menunggu finalisasi.',
+        'selesai' => 'Rental selesai. Mobil kembali tersedia untuk disewa.'
+    ];
+    return redirect()->back()->with('success', $messages[$newStatus]);
+}
 }
