@@ -18,7 +18,11 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('brands',BrandController::class)->except('show');
     Route::resource('cars',CarController::class);
     Route::resource('rentals',RentalController::class);
-    Route::resource('reports',ReportController::class)->except(['destroy','edit','update']);
+    Route::resource('reports',ReportController::class)->except(['destroy','edit','update','create','show']);
+    
+    // Routes untuk export reports
+    Route::get('/reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
+    Route::get('/reports/export-excel', [ReportController::class, 'exportExcel'])->name('reports.export-excel');
 
        // Route untuk update status rental (hanya petugas/admin)
     Route::patch('/rentals/{rental}/status', [RentalController::class, 'updateStatus'])
