@@ -28,6 +28,12 @@
                     <x-nav-link :href="route('rentals.index')" :active="request()->routeIs('rentals.*')">
                         {{ __('Rentals') }}
                     </x-nav-link>
+
+                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'petugas')
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                        {{ __('Reports') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -95,6 +101,13 @@
             <x-responsive-nav-link :href="route('rentals.index')" :active="request()->routeIs('rentals.*')">
                 {{ __('Rentals') }}
             </x-responsive-nav-link>
+
+              @if (auth()->user()->role === 'admin' || auth()->user()->role === 'petugas')
+            <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                {{ __('Reports') }}
+            </x-responsive-nav-link>
+            @endif
+
         </div>
 
         <!-- Responsive Settings Options -->
