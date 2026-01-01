@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class RentalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff,customer')->only(['index', 'show', 'create', 'store']);
+        $this->middleware('role:admin,staff')->only(['edit', 'update', 'updateStatus']);
+        $this->middleware('role:admin')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

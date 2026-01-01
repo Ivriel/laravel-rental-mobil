@@ -11,6 +11,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff')->only(['index', 'store', 'exportPdf', 'exportExcel']);
+    }
+
     /**
      * Display a listing of the resource.
      */

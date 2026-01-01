@@ -15,21 +15,19 @@ Route::get('/', function () {
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('brands',BrandController::class)->except('show');
-    Route::resource('cars',CarController::class);
-    Route::resource('rentals',RentalController::class);
-    Route::resource('reports',ReportController::class)->except(['destroy','edit','update','create','show']);
+    Route::resource('brands', BrandController::class)->except('show');
+    Route::resource('cars', CarController::class);
+    Route::resource('rentals', RentalController::class);
+    Route::resource('reports', ReportController::class)->except(['destroy','edit','update','create','show']);
     
     // Routes untuk export reports
     Route::get('/reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
     Route::get('/reports/export-excel', [ReportController::class, 'exportExcel'])->name('reports.export-excel');
 
-       // Route untuk update status rental (hanya petugas/admin)
-    Route::patch('/rentals/{rental}/status', [RentalController::class, 'updateStatus'])
-        ->name('rentals.updateStatus')
-        ->middleware('auth');
+    // Route untuk update status rental
+    Route::patch('/rentals/{rental}/status', [RentalController::class, 'updateStatus'])->name('rentals.updateStatus');
 
-    Route::get('/brands/{brand}/cars',[BrandController::class, 'showCars'])->name('brands.cars');
+    Route::get('/brands/{brand}/cars', [BrandController::class, 'showCars'])->name('brands.cars');
 });
 
 Route::middleware('auth')->group(function () {

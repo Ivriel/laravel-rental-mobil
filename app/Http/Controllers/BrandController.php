@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff')->only(['index']);
+        $this->middleware('role:admin')->only(['create', 'store', 'edit', 'update', 'destroy']);
+        $this->middleware('role:admin,staff,customer')->only(['showCars']);
+    }
+
     /**
      * Display a listing of the resource.
      */

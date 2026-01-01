@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff,customer')->only(['index', 'show']);
+        $this->middleware('role:admin,staff')->only(['create', 'store', 'edit', 'update']);
+        $this->middleware('role:admin')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
