@@ -12,8 +12,8 @@ class CarController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin,staff,customer')->only(['index', 'show']);
-        $this->middleware('role:admin,staff')->only(['create', 'store', 'edit', 'update']);
+        $this->middleware('role:admin,petugas,pelanggan')->only(['index', 'show']);
+        $this->middleware('role:admin,petugas')->only(['create', 'store', 'edit', 'update']);
         $this->middleware('role:admin')->only(['destroy']);
     }
 

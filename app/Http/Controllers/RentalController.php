@@ -12,8 +12,8 @@ class RentalController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin,staff,customer')->only(['index', 'show', 'create', 'store']);
-        $this->middleware('role:admin,staff')->only(['edit', 'update', 'updateStatus']);
+        $this->middleware('role:admin,petugas,pelanggan')->only(['index', 'show', 'create', 'store']);
+        $this->middleware('role:admin,petugas')->only(['edit', 'update', 'updateStatus']);
         $this->middleware('role:admin')->only(['destroy']);
     }
 
@@ -30,7 +30,7 @@ class RentalController extends Controller
             ->where('user_id',$user->id)
             ->latest()
             ->get();
-        } else if ($user->role === 'petugas'){
+        } else if ($user->role === 'petugas' || $user->role === 'admin'){
             // petugas melihat semua data
             $rentals = Rental::with(['car','user'])->latest()->get();
         }

@@ -14,7 +14,7 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin,staff')->only(['index', 'store', 'exportPdf', 'exportExcel']);
+        $this->middleware('role:admin,petugas')->only(['index', 'store', 'exportPdf', 'exportExcel']);
     }
 
     /**
