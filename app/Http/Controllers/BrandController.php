@@ -12,7 +12,7 @@ class BrandController extends Controller
         $this->middleware('auth');
         $this->middleware('role:admin,petugas')->only(['index']);
         $this->middleware('role:admin')->only(['create', 'store', 'edit', 'update', 'destroy']);
-        $this->middleware('role:admin,petugas,customer')->only(['showCars']);
+        $this->middleware('role:admin,petugas,pelanggan')->only(['showCars']);
     }
 
     /**
